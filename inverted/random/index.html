@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How much of an MLS table is chance? · Brody Armstrong</title>
+<meta name="description" content="Paper 1: chance decides about 56% of the spread in an MLS table, against 23% across eleven European top flights. Compressed team quality explains about 92% of the gap.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../../">Brody Armstrong</a>
+    <nav class="site-nav" aria-label="Main">
+      <a class="opt" href="../">Research</a>
+      <a class="opt" href="../../#contact">Contact</a>
+      <a class="cta" href="../simulator/">Open simulator</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../">Research</a></li><li aria-current="page">Question 1</li></ol></nav>
+</div>
+
+<article>
+<section class="hero" style="padding-top:8px">
+  <div class="wrap measure">
+    <p class="kicker">Question 1 · Paper 1</p>
+    <h1>How much of an MLS table is chance?</h1>
+    <p class="lead">About 56% of the spread in an MLS table comes from chance (95% interval 47–66%). Across eleven European top flights the figure is 23%.</p>
+    <div class="actions">
+      <a class="btn" href="../papers/is-mls-built-to-be-random.pdf">Read the paper (PDF, 9 pages)</a>
+      <a class="btn ghost" href="../papers/why-mls-tables-are-so-unpredictable.pdf">Plain-language version</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap measure">
+  <section class="part" aria-labelledby="claim">
+    <h2 id="claim">The claim</h2>
+    <p>MLS tables are much less predictable than European tables, and most of the difference comes from the teams themselves, not from luck in individual matches. MLS teams are simply closer together in quality, so the same amount of match-to-match randomness moves the table further.</p>
+    <figure class="fig">
+      <img src="../../assets/paper1-luck-share.webp" width="1151" height="557" loading="lazy" alt="Chart: share of the spread in league tables explained by chance, about 56% in MLS against 23% across European top flights; compressed team quality accounts for about 92% of the extra randomness in MLS.">
+      <figcaption>Compressed team quality accounts for about 92% of the extra randomness in MLS.</figcaption>
+    </figure>
+  </section>
+
+  <section class="part" aria-labelledby="evidence">
+    <h2 id="evidence">The evidence</h2>
+    <ul>
+      <li>Every MLS regular season from 2013 to 2026 (2020 excluded), fitted with a Bayesian match model and compared with eleven European top flights.</li><li>Each MLS season replayed thousands of times with one league-design feature at a time switched to its European value: schedule, season length, home advantage and the spread of team quality.</li>
+      <li>The model is checked against closing betting odds, which beat it on match-level prediction; the paper reports that too.</li>
+      <li>16 validation checks were set out in advance: 8 passed, 7 failed and 1 partly passed. All of them are reported in the paper.</li>
+    </ul>
+    <details>
+      <summary>Where the evidence is weak</summary>
+      <ul>
+        <li><strong>Cause.</strong> The paper does not show that MLS rules cause the compression. It measures the compression; it does not prove where it comes from.</li>
+        <li><strong>Spread.</strong> The model understates how spread out real tables are; two of the failed checks are about this.</li>
+        <li><strong>Persistence.</strong> The split between lasting quality and season-to-season change rests on only 11 pairs of seasons.</li>
+        <li><strong>Home advantage.</strong> MLS home advantage is only partly explained.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="part" aria-labelledby="deeper">
+    <h2 id="deeper">Go deeper</h2>
+    <p>If the gap is about teams being close together, the next question is where on the roster that closeness comes from.</p>
+    <a class="next" href="../close/">
+      <span class="frame" aria-hidden="true"><i></i></span>
+      <span><small>Question 2 · Paper 2</small><strong>Why are MLS teams so close together?</strong></span>
+    </a>
+    <a class="next" href="../simulator/">
+      <span class="frame" aria-hidden="true"><i></i></span>
+      <span><small>The tool</small><strong>See what it means for your club's roster</strong></span>
+    </a>
+  </section>
+</div>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p style="margin:0"><strong>Get in touch:</strong> <a href="mailto:__EMAIL__">__EMAIL__</a></p>
+    <nav aria-label="Elsewhere">
+      <a href="__LINKEDIN_URL__">LinkedIn</a>
+      <a href="https://github.com/brody-armstrong">GitHub</a>
+      <a href="https://github.com/brody-armstrong/inverted">Project code</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why are MLS teams so close together? · Brody Armstrong</title>
+<meta name="description" content="Paper 2: MLS clubs are closer in quality than clubs in five comparable leagues at every roster tier, most of all at the top. Talent clusters less and advantages fade faster.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../../">Brody Armstrong</a>
+    <nav class="site-nav" aria-label="Main">
+      <a class="opt" href="../">Research</a>
+      <a class="opt" href="../../#contact">Contact</a>
+      <a class="cta" href="../simulator/">Open simulator</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../">Research</a></li><li aria-current="page">Question 2</li></ol></nav>
+</div>
+
+<article>
+<section class="hero" style="padding-top:8px">
+  <div class="wrap measure">
+    <p class="kicker">Question 2 · Paper 2</p>
+    <h1>Why are MLS teams so close together?</h1>
+    <p class="lead">MLS clubs are closer together in quality than clubs in five comparable leagues at every roster tier, most of all at the top. Talent clusters less, and advantages fade faster from one season to the next.</p>
+    <div class="actions">
+      <a class="btn" href="../papers/paper2-executive-summary.pdf">Executive summary (PDF, 5 pages)</a>
+      <a class="btn ghost" href="../papers/why-mls-teams-stay-so-close-together.pdf">Full paper (12 pages)</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap measure">
+  <section class="part" aria-labelledby="claim">
+    <h2 id="claim">The claim</h2>
+    <p>Using team ratings built from closing betting odds, MLS has the smallest spread of team quality of six leagues: 0.28 goals per match, against 0.42 to 0.71 in Belgium, the Netherlands, Portugal, Scotland and Turkey. That confirms Paper 1 with independent data and a different method.</p>
+    <figure class="fig">
+      <img src="../../assets/paper2-six-leagues.webp" width="1151" height="617" loading="lazy" alt="Bar chart of the spread of team quality within a season: MLS 0.28, Turkey 0.42, Belgium 0.48, Scotland 0.66, Portugal 0.68, Netherlands 0.71; peer median 0.66.">
+      <figcaption>Spread of team quality within a season, in market goals per match.</figcaption>
+    </figure>
+  </section>
+
+  <section class="part" aria-labelledby="patterns">
+    <h2 id="patterns">Four patterns</h2>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th scope="col">Pattern</th><th scope="col" class="num">MLS</th><th scope="col" class="num">Peers</th></tr></thead>
+        <tbody>
+          <tr><td>Spread of the top three players, as a share of the peer spread</td><td class="num">40%</td><td class="num">100%</td></tr>
+          <tr><td>Spread of depth players, as a share of the peer spread</td><td class="num">~50%</td><td class="num">100%</td></tr>
+          <tr><td>Clubs with the best stars also have the best depth (correlation)</td><td class="num">0.78</td><td class="num">0.87–0.96</td></tr>
+          <tr><td>Team quality carried into next season (correlation)</td><td class="num">0.68</td><td class="num">0.87–0.96</td></tr>
+          <tr><td>Next season's minutes going to returning players</td><td class="num">67%</td><td class="num">43–53%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>MLS clubs keep more of their players and still fall back further. Salary buys quality with steep diminishing returns, and the highest-paid player is often not a club's best. All four patterns are descriptive: roster rules are a plausible cause, but this paper does not show that they are the cause.</p>
+  </section>
+
+  <section class="part" aria-labelledby="tested">
+    <h2 id="tested">What I expected, and what happened</h2>
+    <p>I started from a specific idea: football might be a weak-link sport, where a team is only as good as its worst regulars, and MLS rules might stop clubs paying for depth. I wrote that down as predictions before downloading the analysis data.</p>
+    <p>The weak-link mechanism was not supported. Across 1,778 international call-ups and 627 red-card suspensions, losing the best player costs far more than losing a depth player. The best player's estimate lies outside all 500 placebo runs with fake absences.</p>
+    <figure class="fig">
+      <img src="../../assets/paper2-what-we-tested.webp" width="1151" height="762" loading="lazy" alt="Diagram titled Depth was not the answer. What we tested: the weak-link hypothesis; test 1, estimating it from lineup data, failed its NBA validation check and was untestable; test 2, an absence study, found losing the best player costs most, so the weak-link mechanism was not supported. What the data show instead: compression at every tier, the top of the roster compressed most, talent clusters less, advantages decay.">
+      <figcaption>The hypothesis, the two tests, and the four patterns the data showed instead.</figcaption>
+    </figure>
+    <details>
+      <summary>How the predictions were handled</summary>
+      <p>The predictions were written before the analysis data was downloaded and recorded in the project log on 12 November 2026, and the paper was frozen the same day. Each prediction is scored against the result in the results log. There is no external timestamp, so these are a project record rather than a formal preregistration.</p>
+      <p><a href="https://github.com/brody-armstrong/inverted/blob/main/mls/papers/paper2/preregistration.md">Predictions</a> · <a href="https://github.com/brody-armstrong/inverted/blob/main/mls/papers/paper2/results-log.md">Results log</a></p>
+    </details>
+  </section>
+
+  <section class="part" aria-labelledby="deeper">
+    <h2 id="deeper">Go deeper</h2>
+    <p>If quality is compressed and advantages fade fast, where should a club spend? The simulator turns these findings into roster scenarios.</p>
+    <a class="next" href="../simulator/">
+      <span class="frame" aria-hidden="true"><i></i></span>
+      <span><small>The tool</small><strong>Open the Roster Investment Simulator</strong></span>
+    </a>
+    <a class="next" href="../random/">
+      <span class="frame" aria-hidden="true"><i></i></span>
+      <span><small>Back a level · Paper 1</small><strong>How much of an MLS table is chance?</strong></span>
+    </a>
+  </section>
+</div>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p style="margin:0"><strong>Get in touch:</strong> <a href="mailto:__EMAIL__">__EMAIL__</a></p>
+    <nav aria-label="Elsewhere">
+      <a href="__LINKEDIN_URL__">LinkedIn</a>
+      <a href="https://github.com/brody-armstrong">GitHub</a>
+      <a href="https://github.com/brody-armstrong/inverted">Project code</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
