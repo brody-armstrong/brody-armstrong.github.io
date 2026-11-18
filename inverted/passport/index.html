@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timbers2 player passport (prototype) · Brody Armstrong</title>
+<meta name="description" content="A prototype player passport for Portland Timbers 2: one record per player across MLS NEXT Pro and MLS, position KPIs as percentiles, an MLS readiness projection and empty slots for club-only data.">
+<link rel="stylesheet" href="../../assets/style.css">
+<style>
+.lights{display:flex;gap:4px;flex-wrap:wrap}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.25)}
+.green{background:#2e8b57}.amber{background:#e0a526}.red{background:#c4453c}
+.chip{display:inline-block;font-size:13px;font-weight:600;padding:2px 8px;border-radius:999px;color:#fff}
+.chip.amber{color:#1b1d1f}
+tbody tr{cursor:pointer}
+tbody tr:hover,tbody tr[aria-selected="true"]{background:var(--soft)}
+tbody tr td:first-child button{all:unset;cursor:pointer;color:var(--accent);font-weight:600;min-height:44px;display:inline-flex;align-items:center}
+tbody tr td:first-child button:focus-visible{outline:3px solid #2f7dd1;outline-offset:2px}
+.pcard{border:1px solid var(--line);border-radius:10px;padding:20px;margin-top:18px}
+.pcard h3{font-size:22px}
+.grid2{display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:860px){.grid2{grid-template-columns:1fr 1fr}}
+.bar{display:grid;grid-template-columns:120px 1fr 64px;gap:8px;align-items:center;font-size:15px;margin:6px 0}
+.track{height:10px;background:var(--soft);border-radius:5px;position:relative;overflow:hidden}
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:5px}
+.tl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tl div{border:1px solid var(--line);border-radius:8px;padding:10px;font-size:14px}
+.tl b{display:block;font-size:15px}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.slots div{border:1.5px dashed #9aa0a6;border-radius:8px;padding:10px;font-size:14px;color:var(--muted)}
+.slots b{display:block;color:var(--ink);font-size:14px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="../../">Brody Armstrong</a>
+    <nav class="site-nav" aria-label="Main">
+      <a class="opt" href="../">Research</a>
+      <a class="opt" href="../../#contact">Contact</a>
+      <a class="cta" href="../simulator/">Open simulator</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="../../">Home</a></li><li><a href="../">Research</a></li><li aria-current="page">Timbers2 passport</li></ol></nav>
+</div>
+
+<section class="hero" style="padding-top:8px">
+  <div class="wrap measure">
+    <p class="kicker">Prototype · public data only</p>
+    <h1>Timbers2 player passport</h1>
+    <p class="lead">One record per player across MLS NEXT Pro and MLS: minutes by tier and season, position KPIs as percentiles against the league, a projection of how each player's game would carry over to MLS, and empty slots for the data only a club holds.</p>
+    <div class="actions">
+      <a class="btn" href="#squad">See the squad</a>
+      <a class="btn ghost" href="../profiles/#pathway">How the MLS projection works</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <ul class="facts" aria-label="Timbers2 in 2026">
+    <li><strong>5th of 30</strong><span>MLS NEXT Pro points, 2026 (55)</span></li>
+    <li><strong>2nd of 30</strong><span>Fewest expected goals conceded</span></li>
+    <li><strong>14th of 30</strong><span>Expected goals created</span></li>
+    <li><strong>14</strong><span>Players with 900+ minutes</span></li>
+  </ul>
+</div>
+
+<div class="wrap">
+  <section class="part" id="squad" aria-labelledby="squad-h">
+    <h2 id="squad-h">The squad at a glance</h2>
+    <p class="small">2026 MLS NEXT Pro regulars (900+ minutes). Percentiles compare each player with every MLS NEXT Pro player in the same position group with 900+ minutes. The MLS projection is a percentile among MLS players in that group. Select a player to open the passport.</p>
+    <div class="tablebox">
+    <table>
+      <thead><tr><th>Player</th><th class="num">Age</th><th>Pos</th><th class="num">NEXT Pro min</th><th class="num">MLS min</th><th class="num">g+ pct</th><th class="num">MLS proj. pct</th><th>KPI flags</th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    </div>
+    <div class="pcard" id="card" aria-live="polite"></div>
+  </section>
+
+  <section class="part" aria-labelledby="how">
+    <h2 id="how">How it is built</h2>
+    <ul>
+      <li><strong>Data:</strong> American Soccer Analysis public API (xG, xA and goals added, g+), MLS NEXT Pro and MLS, 2024–2026. Thanks to ASA for making it public.</li>
+      <li><strong>KPIs:</strong> g+ per 96 minutes in total and by action (dribbling, passing, receiving, shooting, interrupting), plus xG and xA per 96. These are stand-ins: a club would swap in KPIs written from its own game model.</li>
+      <li><strong>Flags:</strong> green at the 67th percentile or above, red at the 33rd or below, amber between. The bands are a display choice, not a model output, and every flag carries its number.</li>
+      <li><strong>MLS projection:</strong> the pathway model from this project, which translates MLS NEXT Pro production to MLS from past move-ups and checks the projection against what happened to earlier players.</li>
+      <li><strong>Club data slots:</strong> GPS load, workload ratio, wellness, maturation, development-plan focus areas, video clips and coach evaluations are left empty on purpose. They belong in the same record, keyed to the same player ID, but are not public.</li>
+    </ul>
+    <details>
+      <summary>Limits</summary>
+      <ul>
+        <li>Public event-derived metrics only: no tracking or physical data, so pressing, running and maturation are not measured here.</li>
+        <li>Percentiles do not adjust for age. An 18-year-old is compared with a league of mostly older players, which is exactly why the passport keeps a maturation slot.</li>
+        <li>The MLS projection describes how similar past players' numbers carried over. It is not a prediction of selection, and associations are not causes.</li>
+      </ul>
+    </details>
+  </section>
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <p style="margin:0"><strong>Get in touch:</strong> <a href="mailto:brodyarmstrong123@gmail.com">brodyarmstrong123@gmail.com</a></p>
+    <nav aria-label="Elsewhere">
+      <a href="https://www.linkedin.com/in/brody-armstrong-0a905b2a8">LinkedIn</a>
+      <a href="https://github.com/brody-armstrong">GitHub</a>
+      <a href="https://github.com/brody-armstrong/inverted">Project code</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+const PL = [{"id":"a35ry684ML","n":"Daniel Cervantes","a":23.3,"p":"ST","g":"Strikers","np":2028,"mls":0,"gpct":47,"pp":29,"pxg":0.4,"pxa":0.14,"c":"Duncan McGuire (ORL); Nathan Ordaz (LAFC); Ezekiel Alladoh (PHI)","k":[{"k":"g+ total","v":0.017,"p":47,"l":"amber"},{"k":"Dribbling","v":0.011,"p":45,"l":"amber"},{"k":"Passing","v":-0.014,"p":32,"l":"red"},{"k":"Receiving","v":0.037,"p":57,"l":"amber"},{"k":"Shooting","v":-0.004,"p":23,"l":"red"},{"k":"Interrupting","v":-0.013,"p":45,"l":"amber"},{"k":"xG","v":0.662,"p":91,"l":"green"},{"k":"xA","v":0.077,"p":23,"l":"red"}],"t":[{"s":2026,"tier":"MLS NEXT Pro","m":2028}]},{"id":"9vQ241Ex5K","n":"Colin Griffith","a":22.5,"p":"W","g":"Wingers","np":1496,"mls":0,"gpct":76,"pp":54,"pxg":0.17,"pxa":0.1,"c":"Tiago (ORL); Luca Langoni (NER); Capita (SKC)","k":[{"k":"g+ total","v":0.072,"p":76,"l":"green"},{"k":"Dribbling","v":0.039,"p":72,"l":"green"},{"k":"Passing","v":0.048,"p":98,"l":"green"},{"k":"Receiving","v":-0.047,"p":20,"l":"red"},{"k":"Shooting","v":0.031,"p":89,"l":"green"},{"k":"Interrupting","v":0.001,"p":82,"l":"green"},{"k":"xG","v":0.231,"p":57,"l":"amber"},{"k":"xA","v":0.124,"p":29,"l":"red"}],"t":[{"s":2026,"tier":"MLS NEXT Pro","m":1496}]},{"id":"KAqBkZyvQb","n":"Noah Santos","a":19.9,"p":"W","g":"Wingers","np":1773,"mls":0,"gpct":57,"pp":39,"pxg":0.19,"pxa":0.11,"c":"Griffin Yow (NER); Sebastian Gomez (SEA); Rodolfo Aloko (CLT)","k":[{"k":"g+ total","v":0.004,"p":57,"l":"amber"},{"k":"Dribbling","v":0.05,"p":76,"l":"green"},{"k":"Passing","v":0.03,"p":86,"l":"green"},{"k":"Receiving","v":-0.071,"p":6,"l":"red"},{"k":"Shooting","v":0.018,"p":75,"l":"green"},{"k":"Interrupting","v":-0.023,"p":29,"l":"red"},{"k":"xG","v":0.264,"p":62,"l":"amber"},{"k":"xA","v":0.16,"p":50,"l":"amber"}],"t":[{"s":2024,"tier":"MLS NEXT Pro","m":1036},{"s":2025,"tier":"MLS NEXT Pro","m":1299},{"s":2026,"tier":"MLS NEXT Pro","m":1773}]},{"id":"EGMPRJpyqa","n":"Daniel Nunez","a":18.0,"p":"W","g":"Wingers","np":1394,"mls":0,"gpct":4,"pp":10,"pxg":0.16,"pxa":0.09,"c":"Alex Muyl (NSH); Ibrahim Aliyu (HOU); Sebastian Gomez (SEA)","k":[{"k":"g+ total","v":-0.133,"p":4,"l":"red"},{"k":"Dribbling","v":-0.06,"p":2,"l":"red"},{"k":"Passing","v":-0.039,"p":10,"l":"red"},{"k":"Receiving","v":-0.013,"p":56,"l":"amber"},{"k":"Shooting","v":-0.005,"p":44,"l":"amber"},{"k":"Interrupting","v":-0.017,"p":46,"l":"amber"},{"k":"xG","v":0.187,"p":40,"l":"amber"},{"k":"xA","v":0.069,"p":4,"l":"red"}],"t":[{"s":2024,"tier":"MLS NEXT Pro","m":25},{"s":2025,"tier":"MLS NEXT Pro","m":1758},{"s":2026,"tier":"MLS NEXT Pro","m":1394}]},{"id":"raMyealJMd","n":"Benjamin Barjolo","a":19.8,"p":"W","g":"Wingers","np":1052,"mls":0,"gpct":6,"pp":10,"pxg":0.14,"pxa":0.09,"c":"Alex Muyl (NSH); Tiago (ORL); Luca Langoni (NER)","k":[{"k":"g+ total","v":-0.125,"p":6,"l":"red"},{"k":"Dribbling","v":-0.063,"p":1,"l":"red"},{"k":"Passing","v":-0.03,"p":18,"l":"red"},{"k":"Receiving","v":-0.021,"p":41,"l":"amber"},{"k":"Shooting","v":-0.022,"p":12,"l":"red"},{"k":"Interrupting","v":0.011,"p":98,"l":"green"},{"k":"xG","v":0.14,"p":24,"l":"red"},{"k":"xA","v":0.062,"p":2,"l":"red"}],"t":[{"s":2026,"tier":"MLS NEXT Pro","m":1052}]},{"id":"NWMWoYveMl","n":"Eric Izoita","a":19.2,"p":"DM","g":"Midfield","np":2312,"mls":475,"gpct":90,"pp":49,"pxg":0.09,"pxa":0.09,"c":"Jesús Bueno (PHI); Brandon Servania (DCU); Matti Peltola (DCU)","k":[{"k":"g+ total","v":0.046,"p":90,"l":"green"},{"k":"Dribbling","v":0.026,"p":90,"l":"green"},{"k":"Passing","v":0.03,"p":86,"l":"green"},{"k":"Receiving","v":-0.02,"p":50,"l":"amber"},{"k":"Shooting","v":0.026,"p":96,"l":"green"},{"k":"Interrupting","v":-0.017,"p":49,"l":"amber"},{"k":"xG","v":0.15,"p":74,"l":"green"},{"k":"xA","v":0.201,"p":90,"l":"green"}],"t":[{"s":2025,"tier":"MLS NEXT Pro","m":1390},{"s":2026,"tier":"MLS","m":475},{"s":2026,"tier":"MLS NEXT Pro","m":2312}]},{"id":"gpMOL68O5z","n":"Adolfo Enriquez","a":20.6,"p":"DM","g":"Midfield","np":2812,"mls":0,"gpct":54,"pp":22,"pxg":0.04,"pxa":0.06,"c":"Diadie Samassékou (HOU); Brandt Bronico (CLT); Victor Loturi (MTL)","k":[{"k":"g+ total","v":-0.032,"p":54,"l":"amber"},{"k":"Dribbling","v":0.005,"p":60,"l":"amber"},{"k":"Passing","v":0.008,"p":70,"l":"green"},{"k":"Receiving","v":-0.025,"p":35,"l":"amber"},{"k":"Shooting","v":-0.009,"p":41,"l":"amber"},{"k":"Interrupting","v":-0.011,"p":57,"l":"amber"},{"k":"xG","v":0.025,"p":16,"l":"red"},{"k":"xA","v":0.084,"p":47,"l":"amber"}],"t":[{"s":2024,"tier":"MLS","m":10},{"s":2024,"tier":"MLS NEXT Pro","m":1917},{"s":2025,"tier":"MLS NEXT Pro","m":1565},{"s":2026,"tier":"MLS NEXT Pro","m":2812}]},{"id":"Xj5YjkWAqb","n":"Lucas Hernandez-Kim","a":23.0,"p":"AM","g":"Midfield","np":2199,"mls":0,"gpct":33,"pp":17,"pxg":0.09,"pxa":0.09,"c":"Agustín Bouzat (HOU); Lucas Sanabria (LAG); Brandt Bronico (CLT)","k":[{"k":"g+ total","v":-0.065,"p":33,"l":"red"},{"k":"Dribbling","v":-0.008,"p":36,"l":"amber"},{"k":"Passing","v":-0.046,"p":10,"l":"red"},{"k":"Receiving","v":0.021,"p":92,"l":"green"},{"k":"Shooting","v":-0.011,"p":35,"l":"amber"},{"k":"Interrupting","v":-0.021,"p":42,"l":"amber"},{"k":"xG","v":0.161,"p":76,"l":"green"},{"k":"xA","v":0.165,"p":79,"l":"green"}],"t":[{"s":2026,"tier":"MLS NEXT Pro","m":2199}]},{"id":"9vQ246AL5K","n":"Charles Ondo","a":23.1,"p":"FB","g":"Fullbacks","np":1948,"mls":0,"gpct":64,"pp":58,"pxg":0.05,"pxa":0.05,"c":"Franco Negri (HOU); Felipe Andrade (HOU); Jayden Reid (SKC)","k":[{"k":"g+ total","v":-0.002,"p":64,"l":"amber"},{"k":"Dribbling","v":0.02,"p":83,"l":"green"},{"k":"Passing","v":0.007,"p":74,"l":"green"},{"k":"Receiving","v":-0.016,"p":32,"l":"red"},{"k":"Shooting","v":0.004,"p":73,"l":"green"},{"k":"Interrupting","v":-0.017,"p":41,"l":"amber"},{"k":"xG","v":0.046,"p":41,"l":"amber"},{"k":"xA","v":0.022,"p":5,"l":"red"}],"t":[{"s":2025,"tier":"MLS NEXT Pro","m":2105},{"s":2026,"tier":"MLS NEXT Pro","m":1948}]},{"id":"p6qbgbN8Q0","n":"Sawyer Jura","a":20.7,"p":"FB","g":"Fullbacks","np":1315,"mls":0,"gpct":49,"pp":42,"pxg":0.07,"pxa":0.08,"c":"Kobe Franklin (TOR); Dawid Bugaj (MTL); Silvan Hefti (DCU)","k":[{"k":"g+ total","v":-0.026,"p":49,"l":"amber"},{"k":"Dribbling","v":-0.019,"p":14,"l":"red"},{"k":"Passing","v":-0.009,"p":38,"l":"amber"},{"k":"Receiving","v":-0.011,"p":42,"l":"amber"},{"k":"Shooting","v":-0.003,"p":51,"l":"amber"},{"k":"Interrupting","v":0.016,"p":89,"l":"green"},{"k":"xG","v":0.091,"p":69,"l":"green"},{"k":"xA","v":0.119,"p":68,"l":"green"}],"t":[{"s":2024,"tier":"MLS","m":13},{"s":2024,"tier":"MLS NEXT Pro","m":1500},{"s":2025,"tier":"MLS NEXT Pro","m":1820},{"s":2026,"tier":"MLS NEXT Pro","m":1315}]},{"id":"aDQ0lP83QE","n":"Connor Ferguson","a":22.7,"p":"FB","g":"Fullbacks","np":1568,"mls":0,"gpct":55,"pp":41,"pxg":0.05,"pxa":0.1,"c":"Zakaria Taifi (ORL); Kobe Franklin (TOR); Dawid Bugaj (MTL)","k":[{"k":"g+ total","v":-0.017,"p":55,"l":"amber"},{"k":"Dribbling","v":-0.015,"p":25,"l":"red"},{"k":"Passing","v":0.026,"p":93,"l":"green"},{"k":"Receiving","v":-0.039,"p":2,"l":"red"},{"k":"Shooting","v":-0.016,"p":5,"l":"red"},{"k":"Interrupting","v":0.026,"p":94,"l":"green"},{"k":"xG","v":0.044,"p":39,"l":"amber"},{"k":"xA","v":0.209,"p":88,"l":"green"}],"t":[{"s":2026,"tier":"MLS NEXT Pro","m":1568}]},{"id":"jYQJg4OPMG","n":"Bryce Vanvoorhis","a":18.4,"p":"FB","g":"Fullbacks","np":1165,"mls":0,"gpct":23,"pp":23,"pxg":0.05,"pxa":0.05,"c":"Devin Padelford (MIN); Franco Negri (HOU); Kobe Franklin (TOR)","k":[{"k":"g+ total","v":-0.065,"p":23,"l":"red"},{"k":"Dribbling","v":-0.021,"p":8,"l":"red"},{"k":"Passing","v":-0.016,"p":26,"l":"red"},{"k":"Receiving","v":-0.016,"p":30,"l":"red"},{"k":"Shooting","v":-0.01,"p":19,"l":"red"},{"k":"Interrupting","v":-0.001,"p":66,"l":"amber"},{"k":"xG","v":0.058,"p":60,"l":"amber"},{"k":"xA","v":0.033,"p":16,"l":"red"}],"t":[{"s":2025,"tier":"MLS NEXT Pro","m":742},{"s":2026,"tier":"MLS NEXT Pro","m":1165}]},{"id":"XVqKb2PD50","n":"Nicklas Lund","a":24.6,"p":"CB","g":"Centre-backs","np":2927,"mls":0,"gpct":49,"pp":26,"pxg":0.04,"pxa":0.01,"c":"Jansen Miller (SKC); Nolan Norris (FCD); Japhet Sery Larsen (PHI)","k":[{"k":"g+ total","v":-0.022,"p":49,"l":"amber"},{"k":"Dribbling","v":-0.003,"p":38,"l":"amber"},{"k":"Passing","v":0.001,"p":53,"l":"amber"},{"k":"Receiving","v":0.007,"p":73,"l":"green"},{"k":"Shooting","v":0.001,"p":65,"l":"amber"},{"k":"Interrupting","v":-0.028,"p":38,"l":"amber"},{"k":"xG","v":0.056,"p":67,"l":"green"},{"k":"xA","v":0.019,"p":49,"l":"amber"}],"t":[{"s":2025,"tier":"MLS NEXT Pro","m":396},{"s":2026,"tier":"MLS NEXT Pro","m":2927}]},{"id":"2lqRlj9aMr","n":"Alex Bamford","a":24.2,"p":"CB","g":"Centre-backs","np":2845,"mls":0,"gpct":51,"pp":25,"pxg":0.04,"pxa":0.01,"c":"Dave Romney (SJE); Sebastien Ibeagha (FCD); Japhet Sery Larsen (PHI)","k":[{"k":"g+ total","v":-0.021,"p":51,"l":"amber"},{"k":"Dribbling","v":-0.009,"p":16,"l":"red"},{"k":"Passing","v":-0.014,"p":28,"l":"red"},{"k":"Receiving","v":-0.005,"p":44,"l":"amber"},{"k":"Shooting","v":0.002,"p":71,"l":"green"},{"k":"Interrupting","v":0.006,"p":71,"l":"green"},{"k":"xG","v":0.038,"p":47,"l":"amber"},{"k":"xA","v":0.003,"p":15,"l":"red"}],"t":[{"s":2025,"tier":"MLS NEXT Pro","m":1976},{"s":2026,"tier":"MLS NEXT Pro","m":2845}]}];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const COL = {green:"#2e8b57", amber:"#e0a526", red:"#c4453c"};
+const WORD = {green:"strong", amber:"middle", red:"weak"};
+const rows = document.getElementById("rows"), card = document.getElementById("card");
+rows.innerHTML = PL.map((p,i)=>`<tr data-i="${i}" aria-selected="false">
+  <td><button type="button" data-i="${i}">${esc(p.n)}</button></td><td class="num">${p.a ?? "—"}</td><td>${esc(p.p)}</td>
+  <td class="num">${p.np.toLocaleString()}</td><td class="num">${p.mls ? p.mls.toLocaleString() : "—"}</td>
+  <td class="num">${p.gpct}</td><td class="num">${p.pp ?? "—"}</td>
+  <td><span class="lights" aria-label="${p.k.filter(k=>k.l==="green").length} strong, ${p.k.filter(k=>k.l==="red").length} weak">${p.k.map(k=>`<span class="dot ${k.l}" title="${esc(k.k)}: ${k.p}th percentile"></span>`).join("")}</span></td></tr>`).join("");
+function show(i){
+  const p = PL[i];
+  [...rows.children].forEach(r=>r.setAttribute("aria-selected", r.dataset.i==i));
+  const seasons = [2024,2025,2026].map(s=>{
+    const np = p.t.find(x=>x.s===s && x.tier==="MLS NEXT Pro"), m = p.t.find(x=>x.s===s && x.tier==="MLS");
+    return `<div><b>${s}</b>NEXT Pro: ${np ? np.m.toLocaleString() : "—"}<br>MLS: ${m ? m.m.toLocaleString() : "—"}</div>`;}).join("");
+  const bars = p.k.map(k=>`<div class="bar"><span>${esc(k.k)}</span><span class="track" role="img" aria-label="${k.p}th percentile"><span class="fill" style="width:${k.p}%;background:${COL[k.l]}"></span></span><span class="num"><span class="chip ${k.l}">${k.p}</span></span></div>`).join("");
+  card.innerHTML = `<h3>${esc(p.n)}</h3><p class="small">${esc(p.g)} · ${esc(p.p)} · age ${p.a ?? "—"} · Portland Timbers 2</p>
+  <div class="grid2"><div>
+    <h4>Minutes by tier</h4><div class="tl">${seasons}</div>
+    <h4 style="margin-top:18px">MLS readiness (projection)</h4>
+    <p>${p.pp==null ? "No projection." : `Projected MLS g+ per 96 at the <strong>${p.pp}th percentile</strong> of MLS ${esc(p.g.toLowerCase())}. Projected xG ${p.pxg} and xA ${p.pxa} per 96.`}</p>
+    <p class="small">Closest MLS comparables by projected style: ${esc(p.c || "—")}</p>
+  </div><div>
+    <h4>2026 KPIs vs MLS NEXT Pro ${esc(p.g.toLowerCase())}</h4>${bars}
+    <p class="small">Percentile of per-96 values; colours are bands (green ≥67, red ≤33).</p>
+  </div></div>
+  <h4 style="margin-top:18px">Club data slots</h4>
+  <div class="slots">${["GPS high-speed running per 90","Sprints per 90","Acute:chronic workload","Wellness (7-day)","Maturation (PHV status)","Development plan focus areas","Video clips","Coach evaluation"].map(s=>`<div><b>${s}</b>From club systems</div>`).join("")}</div>`;
+}
+rows.addEventListener("click", e=>{const t=e.target.closest("[data-i]"); if(t) show(+t.dataset.i);});
+show(Math.max(0, PL.findIndex(p=>p.n==="Eric Izoita")));
+</script>
+</body>
+</html>
