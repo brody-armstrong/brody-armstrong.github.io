@@ -84,13 +84,14 @@
 <section aria-labelledby="built">
   <div class="wrap measure">
     <h2 id="built">How it was built</h2>
-    <p>I work where applied AI meets football analysis: statistical models, machine learning and the software that makes them usable. The work moves in loops of build, debug, rewrite and learn, with AI tools used for coding, review and checking, and every result traced back to code and data that anyone can rerun.</p>
-    <ul>
-      <li><strong>Predictions before data.</strong> For Paper 2, the predictions were written before the analysis data was downloaded and recorded in the project log.</li>
-      <li><strong>Checks that fail are reported.</strong> Paper 1 ran 16 validation checks: 8 passed, 7 failed, 1 partly passed. Paper 2's main mechanism was not supported, and the paper says so.</li>
-      <li><strong>Checked against the market.</strong> Ratings are compared with closing betting odds on 5,987 MLS matches, and the simulator with preseason futures.</li>
-      <li><strong>Rebuilt in public.</strong> The simulator was rebuilt on public data only and validated against the original version before release.</li>
-    </ul>
+    <p>Every number on this site comes from a script in the <a href="https://github.com/brody-armstrong/inverted">public repository</a>. Each stage of the work has a check that could have failed, and the results are published either way.</p>
+    <ol>
+      <li><strong>Public data only.</strong> Match data from American Soccer Analysis, closing odds from football-data.co.uk, lineups from ESPN, and salaries only from the MLS Players Association releases. When the simulator was rebuilt on public data, it reproduced the original: the spread of team quality matched to 13 decimal places, and player ratings correlated at 0.999995 (<a href="https://github.com/brody-armstrong/inverted/blob/main/mls/src/simulator/VALIDATION.md">validation report</a>).</li>
+      <li><strong>The test is written first.</strong> Paper 2's predictions were written before the analysis data was downloaded and recorded in the project log (<a href="https://github.com/brody-armstrong/inverted/blob/main/mls/papers/paper2/preregistration.md">predictions</a>, <a href="https://github.com/brody-armstrong/inverted/blob/main/mls/papers/paper2/results-log.md">results</a>). For the playoff forecast, seven style matchups and a rule for using them were set before any model was fitted. They improved predictions in 2 of 8 seasons against the 7 required, so they were left out.</li>
+      <li><strong>Measured against the market.</strong> Closing betting odds are the hardest benchmark in football forecasting, so every model is scored against them: 5,987 MLS matches for the team ratings, preseason futures for the simulator (0.81 correlation in 2025), and the 2023–2025 playoffs for the <a href="playoffs/">playoff forecast</a> (log loss 0.962 against 0.954 for the closing odds). Where the market wins, as it does against Paper 1's model by 0.035, the page says so.</li>
+      <li><strong>Failed checks stay in.</strong> Paper 1 ran 16 validation checks: 8 passed, 7 failed and 1 partly passed. Paper 2's weak-link mechanism was not supported. In the playoff backtest a different setting scored slightly better after the fact, and the one chosen in advance was kept.</li>
+      <li><strong>Code checked against itself.</strong> AI tools help write and review the code, so each output gets an independent check before it ships. The playoff page's simulation engine was run on 400,000 brackets and matched the exact probabilities to within 0.2 percentage points, and the playoff seeds were rebuilt from the points table before use.</li>
+    </ol>
     <ul class="timeline" aria-label="Timeline">
       <li><b>Nov 12</b> Paper 2 predictions recorded; Paper 2 frozen</li>
       <li><b>Nov 13</b> Simulator v1.1 validated on public data</li>
